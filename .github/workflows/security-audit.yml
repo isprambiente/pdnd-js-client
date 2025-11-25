@@ -22,16 +22,24 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest
+          bun-version: '1'   # pinned major version
 
-      - name: Install dependencies (bun)
-        run: bun install
+      - name: Verify bun.lockb exists
+        run: |
+          if [ ! -f bun.lockb ]; then
+            echo "bun.lockb not found, make sure you committed your lock file."
+            exit 1
+          fi
+
+      - name: Install dependencies (Bun)
+        run: bun install --frozen-lockfile
 
       - name: Run bun audit (report but don't fail workflow)
         continue-on-error: true
         run: |
+          # run Bun audit and save JSON report
           bun audit --json > bun-audit.json || true
-          bun audit --level moderate || true
+          bun audit --audit-level=moderate || true
 
       - name: Upload bun audit result
         if: always()

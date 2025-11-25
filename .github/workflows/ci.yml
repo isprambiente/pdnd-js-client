@@ -6,26 +6,45 @@ on:
   pull_request:
     branches: [ "main" ]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest   # oppure specifica '1.1.20' per fissare la versione
+          bun-version: '1'
 
-      - name: Install dependencies
-        run: bun install
+      - name: Verify bun.lockb exists
+        run: |
+          if [ ! -f bun.lockb ]; then
+            echo "bun.lockb not found, make sure you committed your lock file."
+            exit 1
+          fi
+
+      - name: Install dependencies (Bun)
+        run: bun install --frozen-lockfile
 
       - name: Run build
-        run: bun build
+        run: bun run build
 
       - name: Run unit tests
-        run: bun test
+        run: bun run test
+
+      - name: Lint
+        run: bun run lint
 
   codeql-analysis:
     runs-on: ubuntu-latest

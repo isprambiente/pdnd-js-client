@@ -17,17 +17,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: '20'
-          cache: 'npm'
+          bun-version: '1'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Verify bun.lockb exists
+        run: |
+          if [ ! -f bun.lockb ]; then
+            echo "bun.lockb not found, make sure you committed your lock file."
+            exit 1
+          fi
+
+      - name: Install dependencies (Bun)
+        run: bun install --frozen-lockfile
+
+      - name: Setup Snyk
+        uses: snyk/actions/setup-snyk@v1
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Run Snyk test
-        uses: snyk/actions/node@master
+        uses: snyk/actions/test@v1
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -35,7 +46,7 @@ jobs:
 
       - name: Monitor project in Snyk dashboard
         if: ${{ success() }}
-        uses: snyk/actions/node@master
+        uses: snyk/actions/test@v1
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
