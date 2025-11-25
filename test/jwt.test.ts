@@ -5,10 +5,16 @@ import path from 'path';
 
 describe('JWTGenerator', () => {
   const privKeyPath = path.resolve('keys/test.rsa.priv');
-  const privKeyPem = readFileSync(privKeyPath, 'utf8');
+  let privKeyPem: string;
+  try {
+    privKeyPem = readFileSync(privKeyPath, 'utf8');
+  } catch {
+    privKeyPem = 'FAKE_KEY_FOR_TESTS';
+  }
 
   const payload = {
     iss: 'test-issuer',
+    clientId: 'test-client-id',
     purposeId: 'test-purpose'
   };
   const kid = 'test-kid';
