@@ -1,34 +1,59 @@
-name: CI
+name: CI Pipeline
+
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
-permissions:
-  contents: read
+    branches: [ "main" ]
 
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          fetch-depth: 0
-      - name: Setup Node (for tooling)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
+          bun-version: latest   # oppure specifica '1.1.20' per fissare la versione
+
       - name: Install dependencies
-        run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Run tests
-        run: npm test
-      - name: Lint
-        run: npm run lint
+        run: bun install
+
+      - name: Run build
+        run: bun build
+
+      - name: Run unit tests
+        run: bun test
+
+  codeql-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+  dependabot-security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dependabot security updates
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

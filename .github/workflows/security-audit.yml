@@ -19,38 +19,47 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: '18'   # fixed major version for reproducibility
-          cache: 'npm'
+          bun-version: latest
 
-      - name: Install dependencies (npm)
-        run: npm ci
+      - name: Install dependencies (bun)
+        run: bun install
 
-      - name: Run npm audit (report but don't fail workflow)
+      - name: Run bun audit (report but don't fail workflow)
         continue-on-error: true
         run: |
-          # keep npm audit for compatibility/reporting (install node_modules for audit)
-          npm ci
-          npm audit --json > npm-audit.json || true
-          npm audit --audit-level=moderate || true
+          bun audit --json > bun-audit.json || true
+          bun audit --level moderate || true
 
-      - name: Upload npm audit result
+      - name: Upload bun audit result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: npm-audit-report
-          path: npm-audit.json
+          name: bun-audit-report
+          path: bun-audit.json
 
-      - name: Optional Snyk setup
-        if: ${{ secrets.SNYK_TOKEN != '' }}
-        uses: snyk/actions/setup-snyk@v1
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      - name: Optional Snyk test
-        if: ${{ secrets.SNYK_TOKEN != '' }}
-        uses: snyk/actions/test@v1
+  codeql-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
         with:
-          severity-threshold: medium
+          languages: ${{ matrix.language }}
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3
+
+  dependabot-security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dependabot security updates
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
