@@ -42,8 +42,9 @@ jobs:
         continue-on-error: true
         run: |
           echo "▶ Eseguo Bun audit..."
-          bun audit --json > bun-audit.json || true
+          bun audit --json > bun-audit.json || echo '{}' > bun-audit.json
           bun audit --audit-level=moderate || true
+          ls -l bun-audit.json || true
 
       - name: Upload Bun audit report
         if: always()
@@ -51,6 +52,7 @@ jobs:
         with:
           name: bun-audit-report
           path: bun-audit.json
+          if-no-files-found: warn
 
   npm-audit:
     runs-on: ubuntu-latest
@@ -63,14 +65,27 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies (npm)
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "Trovato package-lock.json → uso npm ci"
+            npm ci
+          else
+            echo "Nessun package-lock.json → uso npm install"
+            npm install
+          fi
 
-      - name: Run npm audit
+      - name: Run npm audit (produce sempre un JSON)
         continue-on-error: true
         run: |
           echo "▶ Eseguo npm audit..."
-          npm audit --json > npm-audit.json || true
+          if npm audit --json > npm-audit.json; then
+            echo "npm audit completato."
+          else
+            echo "npm audit ha restituito errore; creo un report vuoto per l'artifact."
+            echo '{}' > npm-audit.json
+          fi
           npm audit --audit-level=moderate || true
+          ls -l npm-audit.json || true
 
       - name: Upload npm audit report
         if: always()
@@ -78,6 +93,7 @@ jobs:
         with:
           name: npm-audit-report
           path: npm-audit.json
+          if-no-files-found: warn
 
   codeql-analysis:
     runs-on: ubuntu-latest
@@ -87,8 +103,8 @@ jobs:
         language: [ 'javascript' ]
     steps:
       - uses: actions/checkout@v4
-      - uses: github/codeql-action/init@v3
+      - uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
-      - uses: github/codeql-action/autobuild@v3
-      - uses: github/codeql-action/analyze@v3
+      - uses: github/codeql-action/autobuild@v4
+      - uses: github/codeql-action/analyze@v4
