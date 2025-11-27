@@ -52,6 +52,33 @@ jobs:
           name: bun-audit-report
           path: bun-audit.json
 
+  npm-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (npm)
+        run: npm ci
+
+      - name: Run npm audit
+        continue-on-error: true
+        run: |
+          echo "▶ Eseguo npm audit..."
+          npm audit --json > npm-audit.json || true
+          npm audit --audit-level=moderate || true
+
+      - name: Upload npm audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: npm-audit.json
+
   codeql-analysis:
     runs-on: ubuntu-latest
     strategy:
