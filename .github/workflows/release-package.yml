@@ -19,22 +19,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Install Bun via curl
       - name: Install Bun via curl
         run: |
           curl -fsSL https://bun.sh/install | bash
-          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.bun/bin:$PATH"
 
-      # Verify bun.lock exists
       - name: Verify bun.lock exists
         run: |
           if [ ! -f bun.lock ]; then
-            echo "bun.lock not found, make sure you committed your lock file."
+            echo "❌ bun.lock non trovato. Assicurati di averlo committato."
             exit 1
           fi
 
-      # Install dependencies
-      - name: Install dependencies
+      - name: Install dependencies (Bun)
         run: bun install --frozen-lockfile
 
       # Verify tag matches package.json using Bun
