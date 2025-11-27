@@ -22,10 +22,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: '1'
+      - name: Install Bun via curl
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          export PATH="$HOME/.bun/bin:$PATH"
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
       - name: Verify bun.lock exists
         run: |
@@ -50,33 +51,6 @@ jobs:
         with:
           name: bun-audit-report
           path: bun-audit.json
-
-  npm-audit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies (npm)
-        run: npm ci
-
-      - name: Run npm audit
-        continue-on-error: true
-        run: |
-          echo "▶ Eseguo npm audit..."
-          npm audit --json > npm-audit.json || true
-          npm audit --audit-level=moderate || true
-
-      - name: Upload npm audit report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: npm-audit-report
-          path: npm-audit.json
 
   codeql-analysis:
     runs-on: ubuntu-latest
