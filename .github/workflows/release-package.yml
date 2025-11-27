@@ -37,7 +37,7 @@ jobs:
       - name: Verify tag matches package.json
         run: |
           TAG="${{ github.event.release.tag_name }}"
-          PV="$(bun eval "console.log(require('./package.json').version)")"
+          PV="$(bun --eval "console.log(require('./package.json').version)")"
           if [ "$TAG" != "v$PV" ]; then
             echo "❌ Tag $TAG non corrisponde alla versione v$PV in package.json"
             exit 1
