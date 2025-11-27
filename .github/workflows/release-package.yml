@@ -47,11 +47,14 @@ jobs:
         run: bun run build
 
       - name: Dry run publish
-        run: bun publish --access public --dry-run
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: bun publish --access public --dry-run --token "$NPM_TOKEN"
 
       - name: Publish to npm
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "🚀 Pubblico versione $(bun eval "console.log(require('./package.json').version)")"
+          echo "🚀 Pubblico versione $(bun --eval "console.log(require('./package.json').version)")"
           bun publish --access public --tolerate-republish --token "$NPM_TOKEN"
+
