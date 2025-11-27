@@ -42,3 +42,4 @@ CHANGELOG.md
 tmp/**
 !tmp/.gitkeep
 dist
+.npmrc
