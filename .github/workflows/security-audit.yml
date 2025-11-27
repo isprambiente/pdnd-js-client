@@ -20,14 +20,14 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
-          bun-version: '1'   # pinned major version
+          bun-version: latest   # pinned major version
 
-      - name: Verify bun.lockb exists
+      - name: Verify bun.lock exists
         run: |
-          if [ ! -f bun.lockb ]; then
-            echo "bun.lockb not found, make sure you committed your lock file."
+          if [ ! -f bun.lock ]; then
+            echo "bun.lock not found, make sure you committed your lock file."
             exit 1
           fi
 
@@ -64,10 +64,3 @@ jobs:
       - uses: github/codeql-action/autobuild@v3
       - uses: github/codeql-action/analyze@v3
 
-  dependabot-security:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dependabot security updates
-        uses: dependabot/fetch-metadata@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
