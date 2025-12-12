@@ -23,7 +23,6 @@
   "dependencies": {
     "commander": "^14.0.2",
     "jose": "^6.1.2",
-    "pdnd-js-client": "file:pdnd-js-client-0.1.0.tgz",
     "undici": "^7.16.0"
   }
 }
