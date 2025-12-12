@@ -2,14 +2,15 @@
   "compilerOptions": {
     "target": "ES2022",                  // output moderno
     "module": "ESNext",                  // usa ESM
-    "moduleResolution": "node",          // risoluzione stile Node
+    "moduleResolution": "Node",          // risoluzione stile Node
     "outDir": "dist",                    // cartella di output
     "rootDir": "src",                    // cartella sorgenti
     "strict": true,                      // controlli rigorosi
     "esModuleInterop": true,             // compatibilità import/export
     "forceConsistentCasingInFileNames": true, // evita conflitti maiuscole/minuscole
     "resolveJsonModule": true,           // permette import di JSON
-    "skipLibCheck": true                 // velocizza build ignorando tipi delle librerie
+    "skipLibCheck": true,                // velocizza build ignorando tipi delle librerie
+    "types": ["node"]                    // aggiunge i tipi core di Node.js
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

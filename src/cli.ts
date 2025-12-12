@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env npm
 import { Command } from 'commander';
 import { loadEnvConfig } from './Config.js';
 import { TokenManager } from './TokenManager.js';

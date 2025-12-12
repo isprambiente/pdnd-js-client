@@ -3,64 +3,52 @@
 Client JavaScript/TypeScript per autenticazione e interazione con le API della Piattaforma Digitale Nazionale Dati (PDND).
 
 Basato sugli esempi dei client Ruby e Python, questo package fornisce:
-- utilità per generare JWT firmati: src/JWTGenerator.ts
-- gestione token locale: src/TokenManager.ts
-- client HTTP per lo scambio JWT→access token e per chiamare le API: src/Client.ts
-- CLI per uso da riga di comando: src/cli.ts
+- utilità per generare JWT firmati: `src/JWTGenerator.ts`
+- gestione token locale: `src/TokenManager.ts`
+- client HTTP per lo scambio JWT → access token e per chiamare le API: `src/Client.ts`
+- CLI per uso da riga di comando: `src/cli.ts`
 
-Link rapidi:
-- Codice sorgente: src/JWTGenerator.ts, src/TokenManager.ts, src/Client.ts, src/Config.ts
-- CLI: src/cli.ts
-- Test di esempio: test/jwt.test.ts
-- Config di esempio: configs/sample.json
-- package: package.json
+## Link rapidi
+- Codice sorgente: `src/JWTGenerator.ts`, `src/TokenManager.ts`, `src/Client.ts`, `src/Config.ts`
+- CLI: `src/cli.ts`
+- Test di esempio: `test/jwt.test.ts`
+- Config di esempio: `configs/sample.json`
+- Package: `package.json`
 
-Linguaggi e strumenti
+## Linguaggi e strumenti
 - Linguaggi: TypeScript e JavaScript
-- Runtime: Bun (consigliato) o Node.js (>= 18)
-- Transpilazione: TypeScript (tsc)
+- Runtime: Node.js (>= 18)
+- Transpilazione: TypeScript (`tsc`)
 - Test runner: Vitest
-- Bundler / toolchain: Bun / npm as fallback
+- Gestione pacchetti: npm
 
-Requisiti
-- Bun (consigliato) o Node 18+
+## Requisiti
+- Node.js >= 18
 - TypeScript (dev dependency)
 
-Installazione
+## Installazione
 1. Clona il repository.
-2. Installa le dipendenze (scegli Bun o npm):
-```sh
-# con Bun (consigliato)
-bun install
-
-# con npm
-npm install
+2. Installa le dipendenze:
+   ```sh
+   npm install
 ```
 
 Compilazione (build)
 - Il progetto usa TypeScript: compila con tsc.
 ```sh
-# con Bun
-bun run build
-
-# con npm
-npm run build
+node build
 ```
 
 Esecuzione test
 - Test eseguiti con Vitest.
 ```sh
-# con Bun
-bun run test
-
-# con npm
-npm run test
+node test
 ```
 
 Uso CLI
 Il CLI è avviabile direttamente (shebang in src/cli.ts). Esempio base (usa configs/sample.json se non ne fornisci uno):
 ```sh
-bun run src/cli.ts --env collaudo --config configs/sample.json --status-url https://api.example/status
+node cli -- --env collaudo --config configs/sample.json --status-url https://api.example/status
 ```
 
 Opzioni CLI (tutte)
@@ -77,13 +65,13 @@ Opzioni CLI (tutte)
 
 Esempi d'uso CLI completi
 # Richiesta status (output compatto)
-bun run src/cli.ts --env collaudo --config configs/sample.json --status-url https://api.example/status
+node src/cli.ts --env collaudo --config configs/sample.json --status-url https://api.example/status
 
 # Chiamata API con filtri e output formattato
-bun run src/cli.ts --env produzione --config configs/prod.json --api-url https://api.example/resource --api-url-filters "q=term&limit=10" --pretty
+node src/cli.ts --env produzione --config configs/prod.json --api-url https://api.example/resource --api-url-filters "q=term&limit=10" --pretty
 
 # Disabilitare verify SSL e salvare il token
-bun run src/cli.ts --env collaudo --config configs/sample.json --api-url https://api.example/resource --no-verify-ssl --save
+node src/cli.ts --env collaudo --config configs/sample.json --api-url https://api.example/resource --no-verify-ssl --save
 
 Formato di configurazione
 La funzione loadEnvConfig (src/Config.ts) carica un file JSON con la struttura per ciascun ambiente. Ogni ambiente (`collaudo`/`produzione`) deve contenere:
@@ -123,21 +111,15 @@ Integrazione in un progetto
   - Se il pacchetto è pubblicato su npm:
     ```sh
     npm install pdnd-js-client
-    # oppure
-    bun add pdnd-js-client
     ```
   - Direttamente da GitHub:
     ```sh
     npm install github:isprambiente/pdnd-js-client
-    # oppure
-    bun add github:isprambiente/pdnd-js-client
     ```
   - Da percorso locale (se lavori sul repository):
     ```sh
     # all'interno del progetto che consumerà la libreria
     npm install ../path/to/js-client
-    # o con bun
-    bun add ../path/to/js-client
     ```
 
 - Import e utilizzo (ESM / TypeScript)
@@ -176,20 +158,14 @@ Integrazione in un progetto
 Test
 Un test di esempio per la generazione JWT è presente in test/jwt.test.ts. Esegui i test locali con:
 ```sh
-bun run test
-# oppure
-npm run test
+node test
 ```
 
 Contribuire
 PR e issue sono benvenuti. Assicurati che i test passino e segui gli standard del progetto:
 ```sh
-bun run test
-bun run lint
-
-# oppure con npm
-npm run test
-npm run lint
+node test
+node lint
 ```
 
 Licenza
