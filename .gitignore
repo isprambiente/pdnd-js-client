@@ -43,3 +43,5 @@ tmp/**
 !tmp/.gitkeep
 dist
 .npmrc
+.vscode
+package-lock.json
