@@ -1,4 +1,8 @@
 # pdnd-js-client
+![Composer Security Audit](https://github.com/isprambiente/pdnd-js-client/actions/workflows/security-audit.yml/badge.svg)
+![License](https://img.shields.io/github/license/isprambiente/pdnd-js-client)
+![Node version](https://img.shields.io/node/v/pdnd-js-client)
+![NPM version](https://img.shields.io/npm/v/pdnd-js-client)
 
 Client JavaScript/TypeScript per autenticazione e interazione con le API della Piattaforma Digitale Nazionale Dati (PDND).
 
