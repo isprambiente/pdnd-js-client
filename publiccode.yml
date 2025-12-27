@@ -3,8 +3,8 @@ name: PDND JS Client
 applicationSuite: PDNDClient
 url: https://github.com/isprambiente/pdnd-js-client.git
 landingURL: https://github.com/isprambiente/pdnd-js-client
-softwareVersion: 0.1.1
-releaseDate: 2025-12-12
+softwareVersion: 0.1.2
+releaseDate: 2025-12-27
 platforms:
   - web
   - windows
