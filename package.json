@@ -14,6 +14,7 @@
     "build": "tsc -p .",
     "clean": "rm -rf dist",
     "lint": "eslint . --ext .ts",
+    "audit": "npm audit",
     "test": "vitest",
     "prepare": "npm run build"
   },
