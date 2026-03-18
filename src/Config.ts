@@ -12,12 +12,13 @@ export type EnvConfig = {
 };
 
 export type PDNDConfigFile = {
+  attestazione: EnvConfig;
   collaudo: EnvConfig;
   produzione: EnvConfig;
 };
 
 export async function loadEnvConfig(
-  env: 'collaudo' | 'produzione',
+  env: 'attestazione' | 'collaudo' | 'produzione' = 'produzione',
   filePath = 'configs/sample.json'
 ): Promise<EnvConfig> {
   const raw = await readFile(path.resolve(filePath), 'utf8');

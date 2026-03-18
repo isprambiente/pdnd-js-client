@@ -1,11 +1,16 @@
 import { SignJWT, importPKCS8 } from 'jose';
 import crypto from 'crypto';
 
-export type Environment = 'collaudo' | 'produzione';
+export type Environment = 'attestazione' | 'collaudo' | 'produzione';
 export const DEFAULT_ENV: Environment = 'produzione';
 
 function configureEnvironment(env: Environment) {
-  if (env === 'collaudo') {
+  if (env === 'attestazione') {
+    return {
+      endpoint: 'https://auth.att.interop.pagopa.it/token.oauth2',
+      audience: 'auth.att.interop.pagopa.it/client-assertion'
+    };
+  } else if (env === 'collaudo') {
     return {
       endpoint: 'https://auth.uat.interop.pagopa.it/token.oauth2',
       audience: 'auth.uat.interop.pagopa.it/client-assertion'

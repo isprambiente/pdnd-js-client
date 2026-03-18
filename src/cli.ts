@@ -10,7 +10,7 @@ import { DebugLogger } from './utils/DebugLogger.js';
 const program = new Command();
 program
   .option('--config <file>', 'File di configurazione JSON')
-  .option('--env <env>', 'Ambiente: collaudo o produzione')
+  .option('--env <env>', 'Ambiente: attestazione, collaudo o produzione')
   .option('--status-url <url>', 'URL di status')
   .option('--api-url <url>', 'API URL da chiamare')
   .option('--api-url-filters <filters>', 'Filtri query string')

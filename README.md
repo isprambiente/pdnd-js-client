@@ -40,7 +40,7 @@ Basato sugli esempi dei client Ruby e Python, questo package fornisce:
 Compilazione (build)
 - Il progetto usa TypeScript: compila con tsc.
 ```sh
-node build
+npm run build
 ```
 
 Esecuzione test
@@ -57,7 +57,7 @@ node cli -- --env collaudo --config configs/sample.json --status-url https://api
 
 Opzioni CLI (tutte)
 - --config <file>         : File di configurazione JSON
-- --env <env>             : Ambiente — "collaudo" o "produzione"
+- --env <env>             : Ambiente — "attestazione", "collaudo" o "produzione"
 - --status-url <url>      : URL di status da richiamare
 - --api-url <url>         : API URL da chiamare
 - --api-url-filters <f>   : Filtri query string (formato key1=val1&key2=val2)
@@ -78,7 +78,7 @@ node src/cli.ts --env produzione --config configs/prod.json --api-url https://ap
 node src/cli.ts --env collaudo --config configs/sample.json --api-url https://api.example/resource --no-verify-ssl --save
 
 Formato di configurazione
-La funzione loadEnvConfig (src/Config.ts) carica un file JSON con la struttura per ciascun ambiente. Ogni ambiente (`collaudo`/`produzione`) deve contenere:
+La funzione loadEnvConfig (src/Config.ts) carica un file JSON con la struttura per ciascun ambiente. Ogni ambiente (`attestazione`/`collaudo`/`produzione`) deve contenere:
 - kid
 - issuer
 - clientId
@@ -95,7 +95,8 @@ Esempio:
     "purposeId": "purposeId",
     "privKeyPath": "/tmp/key.pem"
   },
-  "produzione": { }
+  "produzione": { },
+  "attestazione": { }
 }
 ```
 
@@ -135,13 +136,25 @@ Integrazione in un progetto
     ```
   - Esempio d'uso semplificato:
     ```ts
-    // genera jwt usando la config dell'ambiente
+    // genera jwt usando la config dell'ambiente.
+
+    // per produzione
     const jwt = await generateJwt({
       issuer: 'https://issuer.example',
       clientId: 'client-id',
       purposeId: 'purpose-id',
       privKeyPath: '/path/to/key.pem',
       kid: 'key-id'
+    });
+
+    // per collaudo | attestazione
+    const jwt = await generateJwt({
+      issuer: 'https://issuer.example',
+      clientId: 'client-id',
+      purposeId: 'purpose-id',
+      privKeyPath: '/path/to/key.pem',
+      kid: 'key-id',
+      env: 'collaudo'
     });
 
     const client = new Client({ tokenEndpoint: 'https://api.example/token' });
