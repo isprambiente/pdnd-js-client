@@ -47,17 +47,19 @@ async function main() {
       opts.env
     );
 
-    logger.log("JWT generato:", jwt);
+    logger.log('JWT generato:', jwt);
 
     const clientTmp = new Client(cfg, { debug: opts.debug, verifySsl: opts.verifySsl }, logger);
     const { token: accessToken, exp: newExp } = await clientTmp.getAccessToken(jwt, endpoint);
 
-    logger.log("Access token ricevuto:", accessToken);
+    logger.log('Access token ricevuto:', accessToken);
 
     token = accessToken;
     exp = newExp;
 
-    if (opts.save) await tokenMgr.save(token, exp);
+    if (opts.save) {
+      await tokenMgr.save(token, exp);
+    }
   }
 
   // Client con token vero
@@ -75,9 +77,9 @@ async function main() {
   if (opts.apiUrl) {
     const filters = opts.apiUrlFilters
       ? Object.fromEntries(opts.apiUrlFilters.split('&').map((p: string) => {
-          const [k,v] = p.split('=');
-          return [k,v];
-        }))
+        const [k,v] = p.split('=');
+        return [k,v];
+      }))
       : undefined;
 
     const res = await client.requestApi(opts.apiUrl, filters);

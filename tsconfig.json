@@ -4,7 +4,7 @@
     "module": "ESNext",                  // usa ESM
     "moduleResolution": "Node",          // risoluzione stile Node
     "outDir": "dist",                    // cartella di output
-    "rootDir": "src",                    // cartella sorgenti
+    "rootDir": "./",                     // cartella sorgenti
     "strict": true,                      // controlli rigorosi
     "esModuleInterop": true,             // compatibilità import/export
     "forceConsistentCasingInFileNames": true, // evita conflitti maiuscole/minuscole
@@ -12,6 +12,6 @@
     "skipLibCheck": true,                // velocizza build ignorando tipi delle librerie
     "types": ["node"]                    // aggiunge i tipi core di Node.js
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist"]
 }

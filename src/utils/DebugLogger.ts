@@ -1,16 +1,23 @@
 export class DebugLogger {
-  constructor(private enabled: boolean) {}
+  private enabled: boolean;
 
-  log(...args: any[]) {
-    if (this.enabled) console.log('[DEBUG]', ...args);
+  constructor(enabled: boolean) {
+    this.enabled = enabled;
   }
-  info(...args: any[]) {
-    if (this.enabled) console.info('[DEBUG][INFO]', ...args);
+
+  log(...args: unknown[]) {
+    if (this.enabled) { console.log('[DEBUG]', ...args); }
   }
-  warn(...args: any[]) {
-    if (this.enabled) console.warn('[DEBUG][WARN]', ...args);
+
+  info(...args: unknown[]) {
+    if (this.enabled) { console.info('[DEBUG][INFO]', ...args); }
   }
-  error(...args: any[]) {
-    if (this.enabled) console.error('[DEBUG][ERROR]', ...args);
+
+  warn(...args: unknown[]) {
+    if (this.enabled) { console.warn('[DEBUG][WARN]', ...args); }
+  }
+
+  error(...args: unknown[]) {
+    if (this.enabled) { console.error('[DEBUG][ERROR]', ...args); }
   }
 }

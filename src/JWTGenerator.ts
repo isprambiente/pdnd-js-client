@@ -33,12 +33,12 @@ export async function generateJwt(
 
   const privateKey = await importPKCS8(privKeyPem, 'RS256');
   const jwt = await new SignJWT({
-      iss: payload.iss,
-      sub: payload.clientId,
-      purposeId: payload.purposeId,
-      aud: audience,
-      jti: crypto.randomUUID()
-    })
+    iss: payload.iss,
+    sub: payload.clientId,
+    purposeId: payload.purposeId,
+    aud: audience,
+    jti: crypto.randomUUID()
+  })
     .setProtectedHeader({ alg: 'RS256', kid })
     .setIssuedAt()
     .setExpirationTime('5m')
