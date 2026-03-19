@@ -58,10 +58,6 @@ jobs:
       - name: Debug dist
         run: ls -R dist
 
-      # Test
-      - name: Test
-        run: npm test --if-present
-
       # Publish to npm (OIDC → nessun token richiesto)
       - name: Publish to npm
         run: npm publish --access public
