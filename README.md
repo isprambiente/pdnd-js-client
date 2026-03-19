@@ -21,13 +21,13 @@ Basato sugli esempi dei client Ruby e Python, questo package fornisce:
 
 ## Linguaggi e strumenti
 - Linguaggi: TypeScript e JavaScript
-- Runtime: Node.js (>= 18)
+- Runtime: Node.js (>= 24 LTS)
 - Transpilazione: TypeScript (`tsc`)
 - Test runner: Vitest
 - Gestione pacchetti: npm
 
 ## Requisiti
-- Node.js >= 18
+- Node.js >= 24 LTS
 - TypeScript (dev dependency)
 
 ## Installazione
