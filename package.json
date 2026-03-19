@@ -1,6 +1,10 @@
 {
   "name": "pdnd-js-client",
   "version": "0.1.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isprambiente/pdnd-js-client"
+  },
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
