@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",                  // output moderno
-    "module": "ESNext",                  // usa ESM
-    "moduleResolution": "nodenext",      // risoluzione stile Node
+    "module": "NodeNext",                // usa ESM
+    "moduleResolution": "NodeNext",      // risoluzione stile Node
     "outDir": "dist",                    // cartella di output
     "rootDir": "./",                     // cartella sorgenti
     "strict": true,                      // controlli rigorosi
